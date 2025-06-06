@@ -1,0 +1,10 @@
+python3-distutils
+libgl1-mesa-glx
+libglib2.0-0
+libsm6
+libxext6
+libxrender1
+zlib1g
+libjpeg-dev
+libpng-dev
+libopenjp2-7-dev
