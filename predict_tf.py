@@ -9,7 +9,7 @@ print(f"TensorFlow version: {tf.__version__}")
 
 # Load model
 try:
-    model_path = os.path.join("weights", "converted_savedmodel", "model.savedmodel")
+    model_path = os.path.join("weights", "model", "model.savedmodel")
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model directory not found at {model_path}")
     if not os.path.exists(os.path.join(model_path, "saved_model.pb")):
