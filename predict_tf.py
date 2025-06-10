@@ -9,14 +9,14 @@ print(f"TensorFlow version: {tf.__version__}")
 
 # Load model
 try:
-    model_path = os.path.join("weights", "keras_Model")
+    model_path = os.path.join("weights", "converted_savedmodel", "model.savedmodel")
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model directory not found at {model_path}")
     if not os.path.exists(os.path.join(model_path, "saved_model.pb")):
         raise FileNotFoundError(f"saved_model.pb not found in {model_path}")
     if not os.path.exists(os.path.join(model_path, "variables")):
         raise FileNotFoundError(f"variables directory not found in {model_path}")
-    
+
     print(f"Loading model from {model_path}")
     model = load_model(model_path, compile=False)
     print("Model loaded successfully")
@@ -26,9 +26,15 @@ except Exception as e:
     raise
 
 # Load labels
-with open(os.path.join("weights", "labels.txt"), "r") as f:
-    class_names = [line.strip() for line in f.readlines()]
+labels_path = os.path.join("weights", "converted_savedmodel", "labels.txt")
+try:
+    with open(labels_path, "r") as f:
+        class_names = [line.strip() for line in f.readlines()]
+except Exception as e:
+    print(f"Error loading labels: {str(e)}")
+    raise
 
+# Predict function
 def predict_image(img_pil):
     size = (224, 224)
     image = ImageOps.fit(img_pil, size, Image.Resampling.LANCZOS)
