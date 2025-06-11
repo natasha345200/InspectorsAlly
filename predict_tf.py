@@ -58,20 +58,12 @@ def predict_image(img_pil):
         image = ImageOps.fit(img_pil, size, Image.Resampling.LANCZOS)
         image_array = np.asarray(image)
 
-        # Normalize (confirm this matches your model's training preprocessing)
+        # Normalize image as per training preprocessing
         normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
         data[0] = normalized_image_array
 
-        # Make prediction
+        # Predict
         prediction = model.predict(data, verbose=0)
         index = int(np.argmax(prediction))
-        if index >= len(class_names):
-            logger.error(f"Prediction index {index} out of bounds for class_names: {class_names}")
-            raise ValueError(f"Invalid prediction index: {index}")
-
-        class_name = class_names[index]
-        confidence_score = round(float(prediction[0][index]) * 100, 2)
-        logger.info(f"Prediction: {class_name}, Confidence: {confidence_score}%")
-
-        # Map class names to good/abnormal
+        confidence_score = round(float(pred_
